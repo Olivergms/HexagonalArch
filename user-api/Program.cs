@@ -1,3 +1,7 @@
+using Application;
+using Infra.Data;
+using Infra.Email;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddDataBaseInMemory();
+builder.Services.AddEmailService();
+builder.Services.ApplicationService();
+
 
 var app = builder.Build();
 
@@ -14,6 +22,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -21,3 +31,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
