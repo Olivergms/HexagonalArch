@@ -3,6 +3,7 @@
 using Domain.Entities;
 using Domain.Ports.Repositories;
 using Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data.Repositories;
 
@@ -15,23 +16,37 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public Task Delete(Guid Id)
+    public async Task DeleteAsync(Guid Id)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == Id);
+        if (user == null) 
+            throw new Exception("User not found");
+
+        _context.Users.Remove(user);
+
+        await _context.SaveChangesAsync();
     }
 
-    public Task<IEnumerable<User>> GetAll()
+    public async Task<IEnumerable<User>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return await _context.Users.AsNoTracking().ToListAsync();
     }
 
-    public Task Insert(User user)
+    public async Task InsertAsync(User user)
     {
-        throw new NotImplementedException();
+        await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
     }
 
-    public Task Update(User user)
+    public async Task UpdateAsync(User user)
     {
-        throw new NotImplementedException();
+        var userFromDb = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+
+        if (userFromDb == null) throw new Exception("User not found");
+
+        _context.Entry(userFromDb).CurrentValues.SetValues(user);
+
+        await _context.SaveChangesAsync();
+
     }
 }

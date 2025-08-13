@@ -5,8 +5,8 @@ namespace Domain.Ports.Repositories;
 
 public interface IUserRepository
 {
-    Task<IEnumerable<User>> GetAll();
-    Task Insert(User user);
-    Task Update(User user);
-    Task Delete(Guid Id);
+    Task<IEnumerable<User>> GetAllAsync();
+    Task InsertAsync(User user);
+    Task UpdateAsync(User user);
+    Task DeleteAsync(Guid Id);
 }
