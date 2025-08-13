@@ -16,23 +16,58 @@ public class UserServiceManager : IUserService
         _userRepository = userRepository;
     }
 
-    public Task AddNewUserAsync(User user)
+    public async Task AddNewUserAsync(User user)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _userRepository.InsertAsync(user);
+            _emailservice.SendEmail("example@example.com", "example@example.com", "user created", "Api Report");
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
     }
 
-    public Task DeleteUserAsync(Guid id)
+    public async Task DeleteUserAsync(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _userRepository.DeleteAsync(id);
+            _emailservice.SendEmail("example@example.com", "example@example.com", "user deleted", "Api Report");
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
     }
 
-    public Task<IEnumerable<User>> GetAllUsersAsync()
+    public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            return await _userRepository.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
     }
 
-    public Task UpdateUserAsync(User user)
+    public async Task UpdateUserAsync(User user)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _userRepository.UpdateAsync(user);
+            _emailservice.SendEmail("example@example.com", "example@example.com", "user updated", "Api Report");
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
     }
 }
